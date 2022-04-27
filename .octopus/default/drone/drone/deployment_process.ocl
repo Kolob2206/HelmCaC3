@@ -55,7 +55,7 @@ step "Liquibase - Run command" {
         properties = {
             liquibaseAuthenticationMethod = "usernamepassword"
             liquibaseChangeLogFileName = "changelog-master.xml"
-            liquibaseChangeset = "{\"PackageId\":\"api-package\",\"FeedId\":\"Octopus Server (built-in)\"}"
+            liquibaseChangeset = "{\"PackageId\":\"aerospike\",\"FeedId\":\"ArtifactoryDevSnapshots\"}"
             liquibaseCommand = "update"
             liquibaseCommandStyle = "modern"
             liquibaseDatabaseType = "Oracle"
