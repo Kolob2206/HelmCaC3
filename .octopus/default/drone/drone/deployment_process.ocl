@@ -1,33 +1,78 @@
-step "Deploy Helm" {
+step "Requiere intervencion manual" {
+
+    action {
+        action_type = "Octopus.Manual"
+        environments = ["TEST", "PRD"]
+        is_disabled = true
+        properties = {
+            Octopus.Action.Manual.BlockConcurrentDeployments = "False"
+            Octopus.Action.Manual.Instructions = "Se debe aprobar el despliegue en este ambiente"
+            Octopus.Action.Manual.ResponsibleTeamIds = "Everyone"
+        }
+    }
+}
+
+step "Despliega en tomcat T7  DEV" {
     properties = {
-        Octopus.Action.TargetRoles = "cloud"
+        Octopus.Action.TargetRoles = "wrl-web-server"
+    }
+
+    action {
+        action_type = "Octopus.TomcatDeploy"
+        channels = ["00_DEV"]
+        environments = ["DEV"]
+        notes = "[Despliegue a Tomcat T7](https://t7-64-des.pan-energy.com:9443)"
+        properties = {
+            Octopus.Action.EnabledFeatures = "Octopus.Features.TomcatDeployManager"
+            Octopus.Action.Package.DownloadOnTentacle = "True"
+            Octopus.Action.Package.FeedId = "ArtifactoryDevSnapshots"
+            Octopus.Action.Package.PackageId = "com.pan-energy:wrl"
+            Tomcat.Deploy.Controller = "#{tomcat.manager.dev_T7.url}"
+            Tomcat.Deploy.Enabled = "True"
+            Tomcat.Deploy.Name = "/WRL"
+            Tomcat.Deploy.Password = "#{tomcat.manager.dev_T7.pwd}"
+            Tomcat.Deploy.User = "#{tomcat.manager.dev_T7.user}"
+        }
+        worker_pool_variable = ""
+
+        packages {
+            acquisition_location = "ExecutionTarget"
+            feed = "ArtifactoryDevSnapshots"
+            package_id = "com.pan-energy:wrl"
+            properties = {
+                SelectionMode = "immediate"
+            }
+        }
+    }
+}
+
+step "Liquibase - Run command" {
+    properties = {
+        Octopus.Action.TargetRoles = "wrl-bbdd-server"
     }
 
     action {
         properties = {
-            Octopus.Action.Package.FeedId = "Helm 1"
-            Octopus.Action.Package.PackageId = "drone"
-            Octopus.Action.RunOnServer = "true"
-            Octopus.Action.Template.Id = "ActionTemplates-1135"
-            Octopus.Action.Template.Version = "5"
-            pack = "{\"PackageId\":\"drone\",\"FeedId\":\"Helm 1\"}"
-            Template.Helm.Values = "test"
+            liquibaseAuthenticationMethod = "usernamepassword"
+            liquibaseChangeLogFileName = "changelog-master.xml"
+            liquibaseChangeset = "{\"PackageId\":\"com.pan-energy:wrl:zip\",\"FeedId\":\"ArtifactoryDevSnapshots\"}"
+            liquibaseCommand = "update"
+            liquibaseCommandStyle = "modern"
+            liquibaseDatabaseType = "Oracle"
+            Octopus.Action.RunOnServer = "false"
+            Octopus.Action.Template.Id = "ActionTemplates-42"
+            Octopus.Action.Template.Version = "0"
         }
         worker_pool_variable = ""
 
-        container {
-            feed = "docker hub"
-            image = "octopusdeploy/worker-tools:3.3.2-ubuntu.18.04"
-        }
-
-        packages {
+        packages "liquibaseChangeset" {
             acquisition_location = "Server"
-            feed = "Helm 1"
-            package_id = "drone"
+            feed = "ArtifactoryDevSnapshots"
+            package_id = "com.pan-energy:wrl:zip"
             properties = {
-                PackageParameterName = "pack"
+                Extract = "True"
+                PackageParameterName = "liquibaseChangeset"
                 SelectionMode = "deferred"
-                ValuesFilePath = ""
             }
         }
     }
