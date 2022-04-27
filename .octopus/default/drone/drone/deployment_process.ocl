@@ -56,6 +56,7 @@ step "Liquibase - Run command" {
             liquibaseAuthenticationMethod = "usernamepassword"
             liquibaseChangeLogFileName = "changelog-master.xml"
             liquibaseChangeset = "{\"PackageId\":\"api-package\",\"FeedId\":\"Octopus Server (built-in)\"}"
+            liquibaseCommand = "update"
             liquibaseCommandStyle = "modern"
             liquibaseDatabaseType = "Oracle"
             Octopus.Action.RunOnServer = "false"
