@@ -45,3 +45,34 @@ step "Despliega en tomcat T7  DEV" {
         }
     }
 }
+
+step "Liquibase - Run command" {
+    properties = {
+        Octopus.Action.TargetRoles = "client"
+    }
+
+    action {
+        properties = {
+            liquibaseAuthenticationMethod = "usernamepassword"
+            liquibaseChangeLogFileName = "changelog-master.xml"
+            liquibaseChangeset = "{\"PackageId\":\"api-package\",\"FeedId\":\"Octopus Server (built-in)\"}"
+            liquibaseCommandStyle = "modern"
+            liquibaseDatabaseType = "Oracle"
+            Octopus.Action.RunOnServer = "false"
+            Octopus.Action.Template.Id = "ActionTemplates-1161"
+            Octopus.Action.Template.Version = "11"
+        }
+        worker_pool_variable = ""
+
+        packages "liquibaseChangeset" {
+            acquisition_location = "Server"
+            feed = "Octopus Server (built-in)"
+            package_id = "api-package"
+            properties = {
+                Extract = "True"
+                PackageParameterName = "liquibaseChangeset"
+                SelectionMode = "deferred"
+            }
+        }
+    }
+}
