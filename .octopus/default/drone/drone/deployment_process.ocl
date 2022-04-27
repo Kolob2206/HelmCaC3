@@ -56,20 +56,20 @@ step "Liquibase - Run command" {
             liquibaseAuthenticationMethod = "usernamepassword"
             liquibaseChangeLogFileName = "changelog-master.xml"
             liquibaseChangeset = "{\"PackageId\":\"api-package\",\"FeedId\":\"Octopus Server (built-in)\"}"
-            liquibaseCommand = "changelogSync"
+            liquibaseCommand = "update"
             liquibaseCommandStyle = "modern"
             liquibaseDatabaseType = "Oracle"
             liquibaseProLicenseKey = "asdf"
             Octopus.Action.RunOnServer = "false"
             Octopus.Action.Template.Id = "ActionTemplates-1161"
-            Octopus.Action.Template.Version = "11"
+            Octopus.Action.Template.Version = "0"
         }
         worker_pool_variable = ""
 
         packages "liquibaseChangeset" {
             acquisition_location = "Server"
-            feed = "Octopus Server (built-in)"
-            package_id = "api-package"
+            feed = "ArtifactoryDevSnapshots"
+            package_id = "com.pan-energy:wrl:zip"
             properties = {
                 Extract = "True"
                 PackageParameterName = "liquibaseChangeset"
