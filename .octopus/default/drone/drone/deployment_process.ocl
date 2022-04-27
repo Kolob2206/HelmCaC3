@@ -54,6 +54,7 @@ step "Liquibase - Run command" {
     action {
         properties = {
             liquibaseAuthenticationMethod = "usernamepassword"
+            liquibaseChangeLogFileName = "changelog-master.xml"
             liquibaseChangeset = "{\"PackageId\":\"api-package\",\"FeedId\":\"Octopus Server (built-in)\"}"
             liquibaseCommand = "changelogSync"
             liquibaseCommandStyle = "modern"
