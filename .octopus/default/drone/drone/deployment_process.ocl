@@ -55,7 +55,7 @@ step "Liquibase - Run command" {
         properties = {
             liquibaseAuthenticationMethod = "usernamepassword"
             liquibaseChangeLogFileName = "changelog-master.xml"
-            liquibaseChangeset = "{\"PackageId\":\"com.pan-energy:wrl:zip\",\"FeedId\":\"ArtifactoryDevSnapshots\"}"
+            liquibaseChangeset = "{\"PackageId\":\"octopusdeploy/worker-tools\",\"FeedId\":\"Docker Hub\"}"
             liquibaseCommand = "update"
             liquibaseCommandStyle = "modern"
             liquibaseDatabaseType = "Oracle"
