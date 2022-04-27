@@ -69,7 +69,7 @@ step "Liquibase - Run command" {
         packages "liquibaseChangeset" {
             acquisition_location = "Server"
             feed = "ArtifactoryDevSnapshots"
-            package_id = "com.pan-energy:wrl:zip"
+            package_id = "aerospike"
             properties = {
                 Extract = "True"
                 PackageParameterName = "liquibaseChangeset"
