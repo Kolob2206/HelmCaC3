@@ -55,7 +55,7 @@ step "Liquibase - Run command" {
         properties = {
             liquibaseAuthenticationMethod = "usernamepassword"
             liquibaseChangeLogFileName = "changelog-master.xml"
-            liquibaseChangeset = "{\"PackageId\":\"aerospike\",\"FeedId\":\"ArtifactoryDevSnapshots\"}"
+            liquibaseChangeset = "{\"PackageId\":\"api-package\",\"FeedId\":\"Octopus Server (built-in)\"}"
             liquibaseCommand = "update"
             liquibaseCommandStyle = "modern"
             liquibaseDatabaseType = "Oracle"
@@ -68,8 +68,8 @@ step "Liquibase - Run command" {
 
         packages "liquibaseChangeset" {
             acquisition_location = "Server"
-            feed = "ArtifactoryDevSnapshots"
-            package_id = "aerospike"
+            feed = "Octopus Server (built-in)"
+            package_id = "api-package"
             properties = {
                 Extract = "True"
                 PackageParameterName = "liquibaseChangeset"
