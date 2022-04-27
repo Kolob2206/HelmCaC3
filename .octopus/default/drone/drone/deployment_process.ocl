@@ -46,7 +46,7 @@ step "Despliega en tomcat T7  DEV" {
     }
 }
 
-step "Liquibase - Run command" {
+step "Liquibase - Run commands" {
     properties = {
         Octopus.Action.TargetRoles = "client"
     }
